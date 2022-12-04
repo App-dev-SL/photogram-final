@@ -13,7 +13,7 @@
 #  updated_at      :datetime         not null
 #
 class User < ApplicationRecord
-  validates(:username,
+  validates(:email,
     {
       :presence => true,
       :uniqueness => { :case_sensitive => false }
@@ -90,4 +90,3 @@ class User < ApplicationRecord
     return Photo.where({ :id => array_of_discover_photo_ids })
   end
 end
-

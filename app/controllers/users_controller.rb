@@ -1,60 +1,102 @@
 class UsersController < ApplicationController
-  def index
-    matching_users = User.all
-
-    @list_of_users = matching_users.order({ :created_at => :desc })
-
-    render({ :template => "users/index.html.erb" })
-  end
-
-  def show
-    the_id = params.fetch("path_id")
-
-    matching_users = User.where({ :id => the_id })
-
-    @the_user = matching_users.at(0)
-
-    render({ :template => "users/show.html.erb" })
-  end
-
-  def create
-    the_user = User.new
-    the_user.comments_count = params.fetch("query_comments_count")
-    the_user.likes_count = params.fetch("query_likes_count")
-    the_user.private = params.fetch("query_private", false)
-    the_user.username = params.fetch("query_username")
-
-    if the_user.valid?
-      the_user.save
-      redirect_to("/users", { :notice => "User created successfully." })
-    else
-      redirect_to("/users", { :alert => the_user.errors.full_messages.to_sentence })
+  def authenticate
+    un=params.fetch("input_email")
+    pw=params.fetch("input_password")
+        #get the username from params
+        #get the password from params
+        user = User.where({:email=> un }).at(0)
+        #look up the record from the db matching username
+    if user == nil
+    
+          redirect_to("/user_sign_in",{:alert=>"No one by that name round these parts"})
+        else
+          if user.authenticate (pw)
+            session.store(:user_id,user.id)
+    
+            redirect_to("/",{:notice=>"Signed in successfully."})
+          else
+            redirect_to("/user_sign_in", {:alert=>"Nice try!"})
+    
+          end
+        end
+      
+    
+        #if there is no record, redirect back to sign in form 
+    
+        #if there is a record, check to see if password matches
+        #if not, redirect back to sign in form 
+        #if so, set the cookie
+        #redirect to homepage
+    
+      end 
+    
+    
+    def toast_cookies
+      reset_session
+      redirect_to("/",{:notice => "Signed out successfully."})
     end
-  end
-
-  def update
-    the_id = params.fetch("path_id")
-    the_user = User.where({ :id => the_id }).at(0)
-
-    the_user.comments_count = params.fetch("query_comments_count")
-    the_user.likes_count = params.fetch("query_likes_count")
-    the_user.private = params.fetch("query_private", false)
-    the_user.username = params.fetch("query_username")
-
-    if the_user.valid?
-      the_user.save
-      redirect_to("/users/#{the_user.id}", { :notice => "User updated successfully."} )
-    else
-      redirect_to("/users/#{the_user.id}", { :alert => the_user.errors.full_messages.to_sentence })
+    
+    
+      def new_registration_form
+        render({:template =>"users/signup_form.html.erb"})
+      end 
+    
+      def new_session_form
+        render({:template =>"users/signin_form.html.erb"})
+      end 
+    
+    
+      def index
+        @users = User.all.order({ :username => :asc })
+    
+        render({ :template => "users/index.html" })
+      end
+    
+      def show
+        the_username = params.fetch("the_username")
+        @user = User.where({ :username => the_username }).at(0)
+    
+        render({ :template => "users/show.html.erb" })
+      end
+    
+      def create
+        user = User.new
+    
+        user.email = params.fetch("input_email")
+        user.password = params.fetch("input_password")
+        user.password_confirmation = params.fetch("input_password_confirmation")
+    
+        save_status= user.save
+    
+        if save_status==true
+        session.store(:user_email,user.email)
+    
+        redirect_to("/users/#{user.username}", {:notice => "Sign in successfully."})
+        else 
+          redirect_to("/user_sign_up", {:alert => user.errors.full_messages.to_sentence})
+        end
+      end
+    
+      def update
+        the_id = params.fetch("the_user_id")
+        user = User.where({ :id => the_id }).at(0)
+    
+    
+        user.username = params.fetch("input_username")
+    
+        user.save
+        
+        redirect_to("/users/#{user.username}")
+      end
+    
+      def destroy
+        username = params.fetch("the_username")
+        user = User.where({ :username => username }).at(0)
+    
+        user.destroy
+    
+        redirect_to("/users")
+      end
+    
     end
-  end
-
-  def destroy
-    the_id = params.fetch("path_id")
-    the_user = User.where({ :id => the_id }).at(0)
-
-    the_user.destroy
-
-    redirect_to("/users", { :notice => "User deleted successfully."} )
-  end
-end
+    
