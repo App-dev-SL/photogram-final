@@ -1,8 +1,10 @@
 <h1>List of photos</h1>
 
-<form action="/insert_photo_record">
-  <label for="browser_input">Image</label>
-  <input id="browser_input" type="text" name="input_image" placeholder="Enter a URL for the image...">
+
+
+<form action="/insert_photo_record" method="get" class="form-horizontal" enctype="multipart/form-data">
+<label for="input_image">Image</label>
+<input id="input_image" type="file" name="input_image" class="form-control">  
 
   <label for="browser_caption">Caption</label>
   <textarea id="browser_caption" name="input_caption" placeholder="Enter a caption for the photo..."></textarea>

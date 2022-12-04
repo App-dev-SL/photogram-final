@@ -4,11 +4,30 @@
   <dt>ID</dt>
   <dd><%= @user.id %></dd>
 
+
+ <dt>Private</dt>
+  <dd>false</dd>
+  
+
+  <dt>Following</dt>
+  <dd>2</dd>
+
+<dt>Followers</dt>
+  <dd>5</dd>
+
+
+
+
+
   <dt>Edit user</dt>
   <dd>
     <form action="/update_user/<%= @user.id %>" >
       <label for="browser_username">Username</label>
       <input id="browser_username" type="text" name="input_username" placeholder="Enter a username..." value="<%= @user.username %>">
+
+ <label for="browser_private">Private?</label>
+      <input id="browser_private" type="checkbox" name="query_private"  checked>
+
 
       <button>Update user</button>
     </form>
@@ -53,7 +72,7 @@
     </td>
 
     <td>
-      <%= photo.created_at %>
+      31 minutes ago
     </td>
     
     <td>
@@ -65,4 +84,3 @@
 
   <% end %>
 </table>
-

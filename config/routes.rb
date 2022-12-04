@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get("/user_sign_in", {:controller =>"users",:action => "new_session_form"})
 
   post("/verify_credentials", {:controller => "users", :action => "authenticate"})
-
+  get("/edit_user_profile", { :controller => "users", :action => "edit_profile_form" })   
   # CREATE
   get("/insert_user_record", {:controller => "users", :action => "create" })
 
@@ -50,4 +50,3 @@ Rails.application.routes.draw do
   get("/delete_comment/:the_comment_id", { :controller => "comments", :action => "destroy"})
 
 end
-

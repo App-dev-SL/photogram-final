@@ -98,5 +98,7 @@ class UsersController < ApplicationController
         redirect_to("/users")
       end
     
+      def edit_profile_form
+        render({ :template => "users/edit_profile.html.erb" })
+      end
     end
-    

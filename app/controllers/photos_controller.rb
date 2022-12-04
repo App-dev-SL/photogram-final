@@ -13,7 +13,7 @@ class PhotosController < ApplicationController
     photo.image = image
     photo.caption = caption
     photo.save
-    redirect_to("/",{:notice=>"Photo created successfully."})
+    redirect_to("/photos",{:notice=>"Photo created successfully"})
   end
 
   def show

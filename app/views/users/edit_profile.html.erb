@@ -1,0 +1,28 @@
+<div >
+  <h5>
+    Edit user
+  </h5>
+
+  <div>
+   <form action="/update_user/<%= @user.id %>">
+     
+      <div>
+      
+      <label for="browser_username">Username</label>
+      <input id="browser_username" name="input_username" value="<%= @user.username %>">
+
+      </div>
+
+      <div>
+        <label for="browser_password">Password</label>
+  <input id="browser_password" type="password" name="input_password" placeholder="Enter your password...">
+      </div>
+    
+    
+
+      <button>
+        Update account
+      </button>
+    </form>
+  </div>
+</div>
